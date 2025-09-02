@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.route.js";
+import userRoutes from "./routes/user.route.js";
 import connect_mongodb from "./db/connect-mongodb.js";
 import cookieParser from "cookie-parser";
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}.`);
