@@ -39,7 +39,7 @@ export const signup = async (req, res) => {
                 {
                     error: "Password must be at least 6 characters long"
                 }
-            )
+            );
         }
 
         // password-hash
@@ -85,7 +85,7 @@ export const signup = async (req, res) => {
             {
                 error: "Internal server error."
             }
-        )
+        );
     }
 };
 
@@ -124,7 +124,7 @@ export const login = async (req, res) => {
             {
                 error: "Internal server error."
             }
-        )  
+        );
     }
 };
 
@@ -135,7 +135,7 @@ export const logout = async (req, res) => {
             {
                 message: "Logged out successfully."
             }
-        )
+        );
     } 
 
     catch (error) {
@@ -144,7 +144,7 @@ export const logout = async (req, res) => {
             {
                 error: "Internal server error."
             }
-        ) 
+        );
     }
 };
 
@@ -159,6 +159,6 @@ export const getMe = async (req, res) => {
             {
                 error: "Internal server error."
             }
-        ) 
+        );
     }
 }

@@ -29,7 +29,7 @@ export const getUserProfile = async (req, res) => {
             {
                 error: "Internal server error."
             }
-        )
+        );
     }
 }
 
@@ -123,7 +123,7 @@ export const followUnfollowUser = async (req, res) => {
             {
                 error: "Internal server error."
             }
-        )
+        );
     }
 }
 
@@ -150,7 +150,7 @@ export const getSuggestedUsers = async (req, res) => {
             {
                 suggestedUsers
             }
-        )
+        );
     } 
     catch (error) {
         console.log(`error-in-sugestedusers-controller: ${error.message}`);
@@ -158,7 +158,7 @@ export const getSuggestedUsers = async (req, res) => {
             {
                 error: "Internal server error."
             }
-        )
+        );
     }
 }
 
@@ -200,7 +200,7 @@ export const updateUser = async (req, res) => {
                     {
                         error: "Password must be at least 6 characters long"
                     }
-                )
+                );
             }
 
             const salt = await bcrypt.genSalt(10);
@@ -256,6 +256,6 @@ export const updateUser = async (req, res) => {
             {
                 error: "Internal server error."
             }
-        )
+        );
     }
 }
