@@ -1,3 +1,6 @@
+import bcrypt from "bcryptjs";
+import { v2 as cloudinary} from 'cloudinary';
+
 import User from "../models/user.model.js";
 import Notification from "../models/notification.model.js";
 
@@ -165,7 +168,7 @@ export const updateUser = async (req, res) => {
 
     const UID = req.user._id;
     try {
-        const user = User.findById(UID);
+        let user = await User.findById(UID);
         if (!user) {
             return res.status(404).json(
                 {
@@ -206,15 +209,53 @@ export const updateUser = async (req, res) => {
 
         // cloudinary.com
         if (profile_image) {
+            if (user.profile_image) {
+                await cloudinary.uploader.destroy(user.profile_image
+                    .split("/")
+                    .pop()
+                    .split(".")[0]
+                );
+            }
 
+            const uploadedResponse = await cloudinary.uploader.upload(profile_image);
+            profile_image = uploadedResponse.secure_url;
         }
 
         if (cover_image) {
-            
+            if (user.cover_image) {
+                await cloudinary.uploader.destroy(user.cover_image
+                    .split("/")
+                    .pop()
+                    .split(".")[0]
+                );
+            }
+
+            const uploadedResponse = await cloudinary.uploader.upload(cover_image);
+            cover_image = uploadedResponse.secure_url;
         }
+
+        user.full_name = full_name || user.full_name;
+        user.email = email || user.email;
+        user.username = username || user.username;
+        user.bio = bio || user.bio;
+        user.link = link || user.link;
+        user.profile_image = profile_image || user.profile_image;
+        user.cover_image = cover_image || user.cover_image;
+        user = await user.save();
+
+        // password is gonna be `null`.
+        user.password = null;
+        return res.status(200).json(
+            user
+        );
     } 
 
     catch (error) {
-        
+        console.log(`error-in-updateuser-controller: ${error.message}`);
+        res.status(500).json(
+            {
+                error: "Internal server error."
+            }
+        )
     }
 }
