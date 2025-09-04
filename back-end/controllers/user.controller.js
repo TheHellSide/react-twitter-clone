@@ -19,7 +19,7 @@ export const getUserProfile = async (req, res) => {
         }
 
         res.status(200).json(
-            {user}
+            user
         );
     } 
 
@@ -74,6 +74,7 @@ export const followUnfollowUser = async (req, res) => {
                 }
             );
 
+            //. TODO: return the `id` as a response
             res.status(200).json(
                 {
                     message: "User unfollowed successfully."
@@ -109,7 +110,7 @@ export const followUnfollowUser = async (req, res) => {
 
             await newNotification.save();
 
-            // return `id` for response.
+            //. TODO: return the `id` as a response
             res.status(200).json(
                 {
                     message: "User followed successfully."
