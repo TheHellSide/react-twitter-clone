@@ -5,7 +5,7 @@ import { generateTokenAndSetCookie } from '../lib/utils/generateToken.js';
 
 export const signup = async (req, res) => {
     try {
-        const { full_name, username, email, password } = req.body;
+        const { fullName, username, email, password } = req.body;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!emailRegex.test(email)) {
@@ -47,7 +47,7 @@ export const signup = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const newUser = new User({
-            full_name: full_name,
+            fullName: fullName,
             username: username,
             email: email,
             password: hashedPassword
@@ -60,13 +60,13 @@ export const signup = async (req, res) => {
             res.status(201).json(
                 {
                     _id: newUser._id,
-                    full_name: newUser.full_name,
+                    fullName: newUser.fullName,
                     username: newUser.username,
                     email: newUser.email,
                     followers: newUser.followers,
                     following: newUser.following,
-                    profile_image: newUser.profile_image,
-                    cover_image: newUser.cover_image
+                    profileImg: newUser.profileImg,
+                    coverImg: newUser.coverImg
                 }
             );
         }
@@ -107,13 +107,13 @@ export const login = async (req, res) => {
         res.status(201).json(
             {
                 _id: user._id,
-                full_name: user.full_name,
+                fullName: user.fullName,
                 username: user.username,
                 email: user.email,
                 followers: user.followers,
                 following: user.following,
-                profile_image: user.profile_image,
-                cover_image: user.cover_image
+                profileImg: user.profileImg,
+                coverImg: user.coverImg
             }
         );
     }

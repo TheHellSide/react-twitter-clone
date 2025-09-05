@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    full_name: {
+    fullName: {
         type: String,
         required: true
     },
@@ -33,11 +33,11 @@ const userSchema = new mongoose.Schema({
             default: []
         }
     ],
-    profile_image: {
+    profileImg: {
         type: String,
         default: ""
     },
-    cover_image: {
+    coverImg: {
         type: String,
         default: ""
     },
@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
-    liked_posts: [
+    likedPosts: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Post",

@@ -7,7 +7,7 @@ export const getNotifications = async (req, res) => {
             .populate(
                 {
                     path: "from",
-                    select: "username profile_image"
+                    select: "username profileImg"
                 }
             );
         

@@ -135,7 +135,7 @@ export const getLikedPosts = async (req, res) => {
             );
         }
 
-        const likedPosts = await Post.find({_id: {$in: user.liked_posts}})
+        const likedPosts = await Post.find({_id: {$in: user.likedPosts}})
             .populate(
                 {
                     path: "user",
@@ -228,7 +228,7 @@ export const likeUnlikePost = async (req, res) => {
         if (userLikedPost) {
             // unlike
             await Post.updateOne({_id: PID}, {$pull: {likes: UID}});
-            await User.updateOne({_id: UID}, {$pull: {liked_posts: PID}})
+            await User.updateOne({_id: UID}, {$pull: {likedPosts: PID}})
             res.status(200).json(
                 {
                     message: "Post unliked successfully."
@@ -238,7 +238,7 @@ export const likeUnlikePost = async (req, res) => {
         else {
             // like
             post.likes.push(UID);
-            await User.updateOne({_id: UID}, {$push: {liked_posts: PID}});
+            await User.updateOne({_id: UID}, {$push: {likedPosts: PID}});
             await post.save();
 
             const notification = new Notification({
