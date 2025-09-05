@@ -8,7 +8,7 @@ import { fetchCurrentUser } from "../../utils/apiClients/currentUserApi.js";
 
 const CreatePost = () => {
     const [text, setText] = useState("");
-    const [img, setImg] = useState(null);
+    let [img, setImg] = useState(null);
     const imgRef = useRef(null);
 
     const { data: authUser } = useQuery({
@@ -17,7 +17,7 @@ const CreatePost = () => {
     });
     const queryClient = useQueryClient();
 
-    const { mutate: createPost, isError, isPending } = useMutation({
+    const { mutate: createPost, isError, isPending, error } = useMutation({
         mutationFn: async (text, img) => {
             try {
                 const res = await fetch("/api/posts/create", {
@@ -40,7 +40,7 @@ const CreatePost = () => {
         },
         onSuccess: () => {
             // reset che fields.
-            setText = "";
+            setText("");
             setImg(null);
 
             toast.success("Post created successfully.");
@@ -109,7 +109,9 @@ const CreatePost = () => {
                         {isPending ? "Posting..." : "Post"}
                     </button>
                 </div>
-                {isError && <div className="text-red-500">Something went wrong</div>}
+                {isError && <div className="text-red-500">
+                    {error.message}
+                </div>}
             </form>
         </div>
     );
