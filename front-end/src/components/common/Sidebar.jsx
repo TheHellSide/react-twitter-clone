@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { BiLogOut } from "react-icons/bi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import { fetchCurrentUser } from "../../utils/apiClients/currentUserApi.js";
 
 const Sidebar = () => {
     const queryCLient = useQueryClient();
@@ -41,7 +42,8 @@ const Sidebar = () => {
 
     const {data: authUser} = useQuery(
         {
-            queryKey: ["authUser"]
+            queryKey: ["authUser"],
+            queryFn: fetchCurrentUser
         }
     );
 
