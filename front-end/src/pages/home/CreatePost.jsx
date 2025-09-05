@@ -13,12 +13,17 @@ const CreatePost = () => {
 
     const { data: authUser } = useQuery({
         queryKey: ["authUser"],
-        queryFn: fetchCurrentUser
+        queryFn: fetchCurrentUser,
     });
     const queryClient = useQueryClient();
 
-    const { mutate: createPost, isError, isPending, error } = useMutation({
-        mutationFn: async (text, img) => {
+    const {
+        mutate: createPost,
+        isError,
+        isPending,
+        error,
+    } = useMutation({
+        mutationFn: async ({ text, img }) => {
             try {
                 const res = await fetch("/api/posts/create", {
                     method: "POST",
@@ -48,14 +53,13 @@ const CreatePost = () => {
             // invalidate the query to update the UI.
             queryClient.invalidateQueries({
                 queryKey: ["posts"],
-
             });
         },
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        createPost(text, img);
+        createPost({text, img});
     };
 
     const handleImgChange = (e) => {
@@ -109,9 +113,7 @@ const CreatePost = () => {
                         {isPending ? "Posting..." : "Post"}
                     </button>
                 </div>
-                {isError && <div className="text-red-500">
-                    {error.message}
-                </div>}
+                {isError && <div className="text-red-500">{error.message}</div>}
             </form>
         </div>
     );

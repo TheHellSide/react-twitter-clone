@@ -21,8 +21,8 @@ const app = express();
 const PORT = process.env.PORT;
 
 // DANGER: DoS and DDoS Attack (limit not too large)
-app.use(express.json({limit: "5mb"})); // to parse 'req.body'.
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({limit: "10mb"})); // to parse 'req.body'.
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 app.use(cookieParser());
 
