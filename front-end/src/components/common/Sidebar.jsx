@@ -10,42 +10,34 @@ import toast from "react-hot-toast";
 import { fetchCurrentUser } from "../../utils/apiClients/currentUserApi.js";
 
 const Sidebar = () => {
-    const queryCLient = useQueryClient();
-
-    const { mutate: logoutMutation } = useMutation({
+    const queryClient = useQueryClient();
+    const { mutate: logout } = useMutation({
         mutationFn: async () => {
             try {
                 const res = await fetch("/api/auth/logout", {
                     method: "POST",
-                })
-
+                });
                 const data = await res.json();
+
                 if (!res.ok) {
-                    throw data.error || "Something went wrong..."
+                    throw new Error(data.error || "Something went wrong");
                 }
-            } 
-            catch (error) {
-                throw error;
+            } catch (error) {
+                throw new Error(error);
             }
         },
         onSuccess: () => {
-            queryCLient.invalidateQueries(
-                {
-                    queryKey: ["authUser"]
-                }
-            );
+			// queryClient.invalidateQueries({ queryKey: ["authUser"] });
+            queryClient.setQueryData(["authUser"], null);
         },
         onError: () => {
-            toast.error("Logout failed.")
-        }
-    })
-
-    const {data: authUser} = useQuery(
-        {
-            queryKey: ["authUser"],
-            queryFn: fetchCurrentUser
-        }
-    );
+            toast.error("Logout failed");
+        },
+    });
+    const { data: authUser } = useQuery({
+        queryKey: ["authUser"],
+        queryFn: fetchCurrentUser,
+    });
 
     return (
         <div className="md:flex-[2_2_0] w-18 max-w-52">
@@ -100,12 +92,13 @@ const Sidebar = () => {
                                 </p>
                                 <p className="text-slate-500 text-sm">@{authUser?.username}</p>
                             </div>
-                            <BiLogOut onClick={
-                                (e) => {
+                            <BiLogOut
+                                className="w-5 h-5 cursor-pointer"
+                                onClick={(e) => {
                                     e.preventDefault();
-                                    logoutMutation();
-                                }
-                            } className="w-5 h-5 cursor-pointer" />
+                                    logout();
+                                }}
+                            />
                         </div>
                     </Link>
                 )}
